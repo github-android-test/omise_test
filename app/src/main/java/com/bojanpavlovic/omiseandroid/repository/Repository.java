@@ -2,15 +2,20 @@ package com.bojanpavlovic.omiseandroid.repository;
 
 import android.app.Application;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.bojanpavlovic.omiseandroid.interfaces.IRepository;
 import com.bojanpavlovic.omiseandroid.model.CharityResponseModel;
+import com.bojanpavlovic.omiseandroid.model.DonationModel;
+import com.bojanpavlovic.omiseandroid.model.DonationResponseModel;
 
 public class Repository implements IRepository {
     private static Repository INSTANCE = null;
+    private RetrofitAPI retrofitAPI;
 
     private Repository(Application application){
-        // TODO Here initialize Retrofit
-
+        // On Repository init(occurs only once), also init retrofit
+        retrofitAPI = new RetrofitAPI(application);
     }
 
     public static Repository getINSTANCE(Application application){
@@ -20,14 +25,13 @@ public class Repository implements IRepository {
     }
 
     @Override
-    public CharityResponseModel getCharities() {
-        // TODO Implement calling RetrofitAPI via Retrofit
-        return null;
+    public MutableLiveData<CharityResponseModel> getCharities() {
+        return retrofitAPI.getCharities();
     }
 
     @Override
-    public void setDonation() {
-        // TODO Implement calling RetrofitAPI via Retrofit
+    public MutableLiveData<DonationResponseModel> setDonation(DonationModel donation) {
+        return retrofitAPI.setDonation(donation);
     }
 
 }

@@ -10,5 +10,4 @@ public interface IRepository {
     // Defines what calls should be made in Repository
     MutableLiveData<CharityResponseModel> getCharities();
     MutableLiveData<DonationResponseModel> setDonation(DonationModel donation);
-
 }

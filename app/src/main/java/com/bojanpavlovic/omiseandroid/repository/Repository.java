@@ -24,6 +24,8 @@ public class Repository implements IRepository {
         return INSTANCE;
     }
 
+    // For the sake of simplicity, we will not check if internet connection is available
+    // Assume we are connected to internet !!!
     @Override
     public MutableLiveData<CharityResponseModel> getCharities() {
         return retrofitAPI.getCharities();

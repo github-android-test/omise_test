@@ -4,4 +4,8 @@
     <string name="title_donation">Donate</string>
     <string name="charity_item_hint">item name here</string>
 
+    <!-- Accessibility -->
+    <string name="charity_item_logo_content_description">Charity Logo Image</string>
+
+
 </resources>

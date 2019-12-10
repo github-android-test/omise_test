@@ -14,10 +14,10 @@ import com.bojanpavlovic.omiseandroid.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MakeDonationFragment extends Fragment {
+public class DonationsFragment extends Fragment {
 
 
-    public MakeDonationFragment() {
+    public DonationsFragment() {
         // Required empty public constructor
     }
 

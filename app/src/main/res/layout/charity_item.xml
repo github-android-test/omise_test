@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="4dp"
     android:orientation="horizontal"
-    android:background="#aaaaaa">
+    android:background="#CCaaaaaa">
 
     <ImageView
         android:id="@+id/logo"
@@ -14,7 +14,8 @@
         android:adjustViewBounds="true"
         android:layout_gravity="center"
         android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/charity_item_logo_content_description"/>
 
     <TextView
         android:id="@+id/name"

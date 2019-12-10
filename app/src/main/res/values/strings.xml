@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">OmiseAndroid</string>
     <string name="title_charity">Charity List</string>
-    <string name="title_donation">Donate</string>
+    <string name="title_donations">Donate</string>
     <string name="charity_item_hint">item name here</string>
+    <string name="donation_card_label">Card Number:</string>
+    <string name="donation_amount_label">Amount to donate:</string>
+    <string name="donation_card_hint">16 digits required</string>
+    <string name="donation_amount_hint">enter donation amount in THB</string>
+    <string name="donation_button_text">Donate</string>
 
     <!-- Accessibility -->
     <string name="charity_item_logo_content_description">Charity Logo Image</string>

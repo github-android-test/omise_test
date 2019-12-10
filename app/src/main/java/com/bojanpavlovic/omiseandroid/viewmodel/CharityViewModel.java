@@ -57,13 +57,11 @@ public class CharityViewModel extends AndroidViewModel {
         return exitStateLiveData;
     }
 
-    // TODO Later modify to take more args
-    public void onItemClicked(String name){
+    public void onItemClicked(/*int charityId, */String charityName){
         fragmentStateLiveData.postValue(new AttachStateContainer(FragmentState.ATTACHED_DONATIONS, true));
     }
 
     public void onBackPressed(){
-        // Go back to previous fragment/Exit app
        FragmentState lastState = fragmentStateLiveData.getValue().getNewState();
        if(lastState == FragmentState.ATTACHED_DONATIONS){
            // Go back to the beginning screen (charity list fragment)

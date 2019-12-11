@@ -12,7 +12,6 @@ import retrofit2.http.POST;
 public interface IRest {
     @GET("charities")
     Call<CharityResponseModel> getCharities();
-    // TODO MAYBE HEADERS !!!
     @POST("donations")
     Call<DonationResponseModel> setDonation(@Body DonationModel donationModel);
 }

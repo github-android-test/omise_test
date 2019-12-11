@@ -4,6 +4,8 @@ import android.app.Application;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.bojanpavlovic.omiseandroid.interfaces.ICharityResponse;
+import com.bojanpavlovic.omiseandroid.interfaces.IDonationResponse;
 import com.bojanpavlovic.omiseandroid.interfaces.IRepository;
 import com.bojanpavlovic.omiseandroid.model.CharityResponseModel;
 import com.bojanpavlovic.omiseandroid.model.DonationModel;
@@ -27,12 +29,12 @@ public class Repository implements IRepository {
     // For the sake of simplicity, we will not check if internet connection is available
     // Assume we are connected to internet !!!
     @Override
-    public MutableLiveData<CharityResponseModel> getCharities() {
+    public MutableLiveData<ICharityResponse> getCharities() {
         return retrofitAPI.getCharities();
     }
 
     @Override
-    public MutableLiveData<DonationResponseModel> setDonation(DonationModel donation) {
+    public MutableLiveData<IDonationResponse> setDonation(DonationModel donation) {
         return retrofitAPI.setDonation(donation);
     }
 

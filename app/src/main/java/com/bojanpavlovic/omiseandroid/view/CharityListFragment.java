@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bojanpavlovic.omiseandroid.R;
+import com.bojanpavlovic.omiseandroid.interfaces.ICharityResponse;
 import com.bojanpavlovic.omiseandroid.model.CharityItem;
 import com.bojanpavlovic.omiseandroid.model.CharityResponseModel;
 import com.bojanpavlovic.omiseandroid.viewmodel.CharityViewModel;
@@ -53,11 +55,11 @@ public class CharityListFragment extends Fragment implements CharityAdapter.ICha
         initLoader();
 
         // Get proper ViewModel
-        viewModel = ViewModelProviders.of(getActivity() /*requireActivity() */).get(CharityViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(CharityViewModel.class);
         // Initialize adapter
 //        CharityResponseModel responseModel = viewModel.getCharityLiveData().getValue();
-        CharityResponseModel responseModel = viewModel.getCharities().getValue();
-        List<CharityItem> list = responseModel != null ? responseModel.getCharityItemList() : null;
+        ICharityResponse responseModel = viewModel.getCharities().getValue();
+        List<CharityItem> list = responseModel != null ? ((CharityResponseModel)responseModel).getCharityItemList() : null;
         adapter = new CharityAdapter(requireContext(), R.layout.charity_item, list, this);
         // Set adapter
         charityListView.setAdapter(adapter);
@@ -75,12 +77,19 @@ public class CharityListFragment extends Fragment implements CharityAdapter.ICha
 
     private void startObserving(){
         // Observe for data changes and update UI if needed
-        viewModel.getCharityLiveData().observe(this, new Observer<CharityResponseModel>() {
+        viewModel.getCharityLiveData().observe(this, new Observer<ICharityResponse>() {
             @Override
-            public void onChanged(CharityResponseModel charityResponseModel) {
-                // Update adapter with new charity list data
-                adapter.setItemList(charityResponseModel.getCharityItemList());
-                viewModel.setLoaderState(false);
+            public void onChanged(ICharityResponse charityResponseModel) {
+                // Check if we got valid response or error
+                if(isResponseOk(charityResponseModel)){
+                    // Update adapter with new charity list data
+                    adapter.setItemList(((CharityResponseModel)charityResponseModel).getCharityItemList());
+                    viewModel.setLoaderState(false);
+                }else{
+                    // Show error toast
+                    viewModel.setLoaderState(false);
+                    Toast.makeText(requireActivity(), getString(R.string.error_text), Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -105,6 +114,12 @@ public class CharityListFragment extends Fragment implements CharityAdapter.ICha
     @Override
     public void onItemClicked(int charityId, String itemName) {
         viewModel.onItemClicked(charityId, itemName);
+    }
+
+    // If REST returns error response, error flag is set
+    // We check that flag to validate proper response
+    private boolean isResponseOk(ICharityResponse response){
+        return !response.isError();
     }
 
 }

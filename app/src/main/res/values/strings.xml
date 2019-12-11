@@ -10,12 +10,11 @@
     <string name="donation_button_text">Donate</string>
     <string name="donation_invalid_card_length">Please enter 16 credit card digits</string>
     <string name="donation_invalid_sum">Please enter valid donation amount</string>
+    <string name="error_text">Error occurred</string>
 
     <!-- Accessibility -->
     <string name="charity_item_logo_content_description">Charity Logo Image</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

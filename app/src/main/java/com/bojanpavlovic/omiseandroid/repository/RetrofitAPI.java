@@ -5,6 +5,8 @@ import android.app.Application;
 import androidx.lifecycle.MutableLiveData;
 
 import com.bojanpavlovic.omiseandroid.R;
+import com.bojanpavlovic.omiseandroid.interfaces.ICharityResponse;
+import com.bojanpavlovic.omiseandroid.interfaces.IDonationResponse;
 import com.bojanpavlovic.omiseandroid.interfaces.IRest;
 import com.bojanpavlovic.omiseandroid.model.CharityResponseModel;
 import com.bojanpavlovic.omiseandroid.model.DonationModel;
@@ -33,37 +35,56 @@ public class RetrofitAPI {
                 .build();
     }
 
-    public MutableLiveData<CharityResponseModel> getCharities(){
-        final MutableLiveData<CharityResponseModel> charityLiveData = new MutableLiveData<>();
+    public MutableLiveData<ICharityResponse> getCharities(){
+        final MutableLiveData<ICharityResponse> charityLiveData = new MutableLiveData<>();
         Call<CharityResponseModel> call = iRest.getCharities();
         call.enqueue(new Callback<CharityResponseModel>() {
             @Override
             public void onResponse(Call<CharityResponseModel> call, Response<CharityResponseModel> response) {
-                // TODO Add checking response code here !!!
-                charityLiveData.postValue(response.body());
+                if(response.code() == 200){
+                    charityLiveData.postValue(response.body());
+                }else{
+                    ICharityResponse errorModel = new CharityResponseModel();
+                    errorModel.setError();
+                    errorModel.setErrorResponse("error");
+                    charityLiveData.postValue(errorModel);
+                }
             }
 
             @Override
             public void onFailure(Call<CharityResponseModel> call, Throwable t) {
-                // TODO Handle failure !!!
+                ICharityResponse errorModel = new CharityResponseModel();
+                errorModel.setError();
+                errorModel.setErrorResponse(t.getMessage());
+                charityLiveData.postValue(errorModel);
             }
         });
         return charityLiveData;
     }
 
-    public MutableLiveData<DonationResponseModel> setDonation(DonationModel donation){
-        final MutableLiveData<DonationResponseModel> donationLiveData = new MutableLiveData<>();
+    public MutableLiveData<IDonationResponse> setDonation(DonationModel donation){
+        final MutableLiveData<IDonationResponse> donationLiveData = new MutableLiveData<>();
         Call<DonationResponseModel> call = iRest.setDonation(donation);
         call.enqueue(new Callback<DonationResponseModel>() {
             @Override
             public void onResponse(Call<DonationResponseModel> call, Response<DonationResponseModel> response) {
-                // TODO Add checking response code here !!!
-                donationLiveData.postValue(response.body());
+                if(response.code() == 201){
+                    // Response OK
+                    donationLiveData.postValue(response.body());
+                }else{
+                    IDonationResponse errorModel = new DonationResponseModel();
+                    errorModel.setError();
+                    errorModel.setErrorResponse("error");
+                    donationLiveData.postValue(errorModel);
+                }
             }
 
             @Override
             public void onFailure(Call<DonationResponseModel> call, Throwable t) {
-                // TODO Handle failure !!!
+                IDonationResponse errorModel = new DonationResponseModel();
+                errorModel.setError();
+                errorModel.setErrorResponse(t.getMessage());
+                donationLiveData.postValue(errorModel);
             }
         });
         return donationLiveData;

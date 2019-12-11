@@ -8,6 +8,6 @@ import com.bojanpavlovic.omiseandroid.model.DonationResponseModel;
 
 public interface IRepository {
     // Defines what calls should be made in Repository
-    MutableLiveData<CharityResponseModel> getCharities();
-    MutableLiveData<DonationResponseModel> setDonation(DonationModel donation);
+    MutableLiveData<ICharityResponse> getCharities();
+    MutableLiveData<IDonationResponse> setDonation(DonationModel donation);
 }

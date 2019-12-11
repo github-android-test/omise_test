@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.bojanpavlovic.omiseandroid.FragmentState;
+import com.bojanpavlovic.omiseandroid.interfaces.ICharityResponse;
+import com.bojanpavlovic.omiseandroid.interfaces.IDonationResponse;
 import com.bojanpavlovic.omiseandroid.model.AttachStateContainer;
 import com.bojanpavlovic.omiseandroid.model.CharityResponseModel;
 import com.bojanpavlovic.omiseandroid.model.Charity;
@@ -17,10 +19,10 @@ import com.bojanpavlovic.omiseandroid.repository.Repository;
 
 public class CharityViewModel extends AndroidViewModel {
     private MutableLiveData<AttachStateContainer>fragmentStateLiveData = new MutableLiveData<>();
-    private MutableLiveData<CharityResponseModel> charityLiveData;
+    private MutableLiveData<ICharityResponse> charityLiveData;
     private MutableLiveData<Boolean> isLoadingLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> exitStateLiveData = new MutableLiveData<>();
-    private MutableLiveData<DonationResponseModel> donationLiveData;
+    private MutableLiveData<IDonationResponse> donationLiveData;
     private Repository repository;
     private Charity selectedCharity;
     // Holds response from server after donation call.
@@ -43,11 +45,11 @@ public class CharityViewModel extends AndroidViewModel {
     /**
      * Api that exposes ViewModel to View
      */
-    public LiveData<CharityResponseModel> getCharityLiveData(){
+    public LiveData<ICharityResponse> getCharityLiveData(){
         return charityLiveData;
     }
 
-    public LiveData<CharityResponseModel> getCharities(){
+    public LiveData<ICharityResponse> getCharities(){
         // Make initial data fetch
         charityLiveData = repository.getCharities();
         // Signalize view subscriber to show Loader
@@ -57,7 +59,7 @@ public class CharityViewModel extends AndroidViewModel {
         return charityLiveData;
     }
 
-    public LiveData<DonationResponseModel> makeDonation(DonationModel donation){
+    public LiveData<IDonationResponse> makeDonation(DonationModel donation){
         donationLiveData = repository.setDonation(donation);
         // TODO Test loader - delete later
         isLoadingLiveData.postValue(true);
@@ -105,7 +107,7 @@ public class CharityViewModel extends AndroidViewModel {
         fragmentStateLiveData.postValue(new AttachStateContainer(nextState, true));
     }
 
-    public LiveData<DonationResponseModel> getDonationLiveData(){
+    public LiveData<IDonationResponse> getDonationLiveData(){
         return donationLiveData;
     }
 

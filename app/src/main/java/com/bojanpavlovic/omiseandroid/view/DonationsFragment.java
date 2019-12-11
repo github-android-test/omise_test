@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.bojanpavlovic.omiseandroid.FragmentState;
 import com.bojanpavlovic.omiseandroid.R;
+import com.bojanpavlovic.omiseandroid.interfaces.IDonationResponse;
 import com.bojanpavlovic.omiseandroid.model.Charity;
 import com.bojanpavlovic.omiseandroid.model.DonationModel;
 import com.bojanpavlovic.omiseandroid.model.DonationResponseModel;
@@ -61,7 +62,7 @@ public class DonationsFragment extends Fragment implements View.OnClickListener 
         donateButton = view.findViewById(R.id.donate_button);
         donateButton.setOnClickListener(this);
 
-        viewModel = ViewModelProviders.of(getActivity() /*requireActivity() */).get(CharityViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(CharityViewModel.class);
         selectedCharity = viewModel.getSelectedCharity();
 
         // Observe for changes in Loader state(Show/Hide)
@@ -148,19 +149,22 @@ public class DonationsFragment extends Fragment implements View.OnClickListener 
     }
 
     private void donate(){
-        Log.i("TEST_LOGG", "Donations->donate");
-        viewModel.makeDonation(prepareDonationData()).observe(this, new Observer<DonationResponseModel>() {
+        viewModel.makeDonation(prepareDonationData()).observe(this, new Observer<IDonationResponse>() {
             @Override
-            public void onChanged(DonationResponseModel donationResponseModel) {
-                Log.i("TEST_LOGG", "Donations->donationR response: " + donationResponseModel.toString());
-                // TODO Check response and if OK go to next page
-                // Hide loader
-                viewModel.setLoaderState(false);
-                // TODO Handle status
-
-                //  TODO Just temporary
-                viewModel.setDonationResponseData(donationResponseModel);
-                viewModel.changeScreen(FragmentState.ATTACHED_SUCCESS);
+            public void onChanged(IDonationResponse donationResponseModel) {
+                // Check if we got valid response or error
+                if(donationResponseModel.isError() || !((DonationResponseModel)donationResponseModel).getSuccess() ){
+                    // Hide loader
+                    viewModel.setLoaderState(false);
+                    // Show error toast
+                    Toast.makeText(requireActivity(), getString(R.string.error_text), Toast.LENGTH_LONG).show();
+                }else{
+                    // Hide loader
+                    viewModel.setLoaderState(false);
+                    // Go to Success screen
+                    viewModel.setDonationResponseData((DonationResponseModel) donationResponseModel);
+                    viewModel.changeScreen(FragmentState.ATTACHED_SUCCESS);
+                }
             }
         });
     }

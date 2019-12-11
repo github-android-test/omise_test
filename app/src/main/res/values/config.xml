@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="API_BASE_URL">https://virtserver.swaggerhub.com/chakritw/tamboon-api/1.0.0/</string>
+    <!-- TODO Add valid token here !!! -->
+    <string name="hardcoded_token">tokn_test_deadbeef</string>
 </resources>

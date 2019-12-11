@@ -3,7 +3,16 @@ package com.bojanpavlovic.omiseandroid.model;
 public class DonationModel {
     private String name;
     private String token;
-    private long amount;
+    private int amount;
+
+    private String cardNumber;
+
+    public DonationModel(){
+        name = "";
+        token = "";
+        amount = 0;
+        cardNumber = "";
+    }
 
     public String getName() {
         return name;
@@ -21,11 +30,19 @@ public class DonationModel {
         this.token = token;
     }
 
-    public long getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public String getCardNumberInTextFormat() {
+        return cardNumber;
+    }
+
+    public void setCardNumberInTextFormat(String cardNumberInTextFormat) {
+        this.cardNumber = cardNumberInTextFormat;
     }
 }

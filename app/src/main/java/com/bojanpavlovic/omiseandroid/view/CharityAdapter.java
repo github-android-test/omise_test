@@ -66,8 +66,7 @@ public class CharityAdapter extends ArrayAdapter<CharityItem> {
         itemContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Later change listener to take more important args
-                listener.onItemClicked(item.getName());
+                listener.onItemClicked(item.getId(), item.getName());
             }
         });
 
@@ -86,7 +85,7 @@ public class CharityAdapter extends ArrayAdapter<CharityItem> {
     }
 
     public interface ICharityItemClickListener{
-        void onItemClicked(String itemName);
+        void onItemClicked(int charityId, String itemName);
     }
 
 }

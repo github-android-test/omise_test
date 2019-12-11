@@ -101,8 +101,8 @@ public class CharityListFragment extends Fragment implements CharityAdapter.ICha
     }
 
     @Override
-    public void onItemClicked(String itemName) {
-        viewModel.onItemClicked(itemName);
+    public void onItemClicked(int charityId, String itemName) {
+        viewModel.onItemClicked(charityId, itemName);
     }
 
 }

@@ -11,6 +11,7 @@
     <string name="donation_invalid_card_length">Please enter 16 credit card digits</string>
     <string name="donation_invalid_sum">Please enter valid donation amount</string>
     <string name="error_text">Error occurred</string>
+    <string name="loading_text">Loading &#8230;</string>
 
     <!-- Accessibility -->
     <string name="charity_item_logo_content_description">Charity Logo Image</string>

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.bojanpavlovic.omiseandroid.FragmentState;
 import com.bojanpavlovic.omiseandroid.R;
 import com.bojanpavlovic.omiseandroid.model.DonationResponseModel;
-import com.bojanpavlovic.omiseandroid.viewmodel.CharityViewModel;
+import com.bojanpavlovic.omiseandroid.viewmodel.CustomViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +25,7 @@ import com.bojanpavlovic.omiseandroid.viewmodel.CharityViewModel;
 public class SuccessFragment extends Fragment implements View.OnClickListener {
     private TextView responseTextView;
     private Button backButton;
-    private CharityViewModel viewModel;
+    private CustomViewModel viewModel;
     private DonationResponseModel donationResponseData;
 
     public SuccessFragment() {
@@ -67,6 +67,6 @@ public class SuccessFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initViewModel(){
-        viewModel = ViewModelProviders.of(requireActivity()).get(CharityViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(CustomViewModel.class);
     }
 }

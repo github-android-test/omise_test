@@ -3,7 +3,6 @@ package com.bojanpavlovic.omiseandroid.view;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ import com.bojanpavlovic.omiseandroid.R;
 import com.bojanpavlovic.omiseandroid.interfaces.ICharityResponse;
 import com.bojanpavlovic.omiseandroid.model.CharityItem;
 import com.bojanpavlovic.omiseandroid.model.CharityResponseModel;
-import com.bojanpavlovic.omiseandroid.viewmodel.CharityViewModel;
+import com.bojanpavlovic.omiseandroid.viewmodel.CustomViewModel;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class CharityListFragment extends Fragment implements CharityAdapter.ICharityItemClickListener {
-    private CharityViewModel viewModel;
+    private CustomViewModel viewModel;
     private CharityAdapter adapter;
     private ListView charityListView;
     private ProgressDialog progressDialog;
@@ -55,23 +54,20 @@ public class CharityListFragment extends Fragment implements CharityAdapter.ICha
         initLoader();
 
         // Get proper ViewModel
-        viewModel = ViewModelProviders.of(requireActivity()).get(CharityViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(CustomViewModel.class);
         // Initialize adapter
-//        CharityResponseModel responseModel = viewModel.getCharityLiveData().getValue();
         ICharityResponse responseModel = viewModel.getCharities().getValue();
         List<CharityItem> list = responseModel != null ? ((CharityResponseModel)responseModel).getCharityItemList() : null;
         adapter = new CharityAdapter(requireContext(), R.layout.charity_item, list, this);
         // Set adapter
         charityListView.setAdapter(adapter);
-
         startObserving();
     }
 
     // Initializes Progress Dialog
     private void initLoader(){
         progressDialog = new ProgressDialog(requireActivity());
-        // TODO Move title text to strings
-        progressDialog.setTitle("Loading ...");
+        progressDialog.setTitle(getString(R.string.loading_text));
         progressDialog.setCancelable(false);
     }
 
@@ -98,14 +94,13 @@ public class CharityListFragment extends Fragment implements CharityAdapter.ICha
             @Override
             public void onChanged(Boolean aBoolean) {
                 if(aBoolean){
-                    Log.i("TEST_LOGG", "Charity->LoaderStateChanged: " + aBoolean);
                     // Show loader
                     if(!progressDialog.isShowing())
                         progressDialog.show();
                 }else{
                     // Hide loader
                     if(progressDialog.isShowing())
-                        progressDialog.hide();
+                        progressDialog.dismiss();
                 }
             }
         });

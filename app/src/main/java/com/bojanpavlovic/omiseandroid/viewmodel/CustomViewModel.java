@@ -11,13 +11,12 @@ import com.bojanpavlovic.omiseandroid.FragmentState;
 import com.bojanpavlovic.omiseandroid.interfaces.ICharityResponse;
 import com.bojanpavlovic.omiseandroid.interfaces.IDonationResponse;
 import com.bojanpavlovic.omiseandroid.model.AttachStateContainer;
-import com.bojanpavlovic.omiseandroid.model.CharityResponseModel;
 import com.bojanpavlovic.omiseandroid.model.Charity;
 import com.bojanpavlovic.omiseandroid.model.DonationModel;
 import com.bojanpavlovic.omiseandroid.model.DonationResponseModel;
 import com.bojanpavlovic.omiseandroid.repository.Repository;
 
-public class CharityViewModel extends AndroidViewModel {
+public class CustomViewModel extends AndroidViewModel {
     private MutableLiveData<AttachStateContainer>fragmentStateLiveData = new MutableLiveData<>();
     private MutableLiveData<ICharityResponse> charityLiveData;
     private MutableLiveData<Boolean> isLoadingLiveData = new MutableLiveData<>();
@@ -29,7 +28,7 @@ public class CharityViewModel extends AndroidViewModel {
     // Used in Success screen
     private DonationResponseModel donationResponsedata;
 
-    public CharityViewModel(@NonNull Application application) {
+    public CustomViewModel(@NonNull Application application) {
         super(application);
         // Initialize repository
         repository = Repository.getINSTANCE(application);
@@ -93,10 +92,6 @@ public class CharityViewModel extends AndroidViewModel {
         // Move to donation screen
         fragmentStateLiveData.postValue(new AttachStateContainer(FragmentState.ATTACHED_DONATIONS, true));
     }
-
-//    public void changeScreen(int charityId, String charityName){
-//
-//    }
 
     /**
      * Used for app navigation

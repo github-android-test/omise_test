@@ -3,14 +3,6 @@ package com.bojanpavlovic.omiseandroid.view;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,19 +10,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.bojanpavlovic.omiseandroid.FragmentState;
 import com.bojanpavlovic.omiseandroid.R;
 import com.bojanpavlovic.omiseandroid.interfaces.IDonationResponse;
 import com.bojanpavlovic.omiseandroid.model.Charity;
 import com.bojanpavlovic.omiseandroid.model.DonationModel;
 import com.bojanpavlovic.omiseandroid.model.DonationResponseModel;
-import com.bojanpavlovic.omiseandroid.viewmodel.CharityViewModel;
+import com.bojanpavlovic.omiseandroid.viewmodel.CustomViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DonationsFragment extends Fragment implements View.OnClickListener {
-    private CharityViewModel viewModel;
+    private CustomViewModel viewModel;
     private Charity selectedCharity;
     private EditText cardNumberEditText;
     private EditText donationAmountEditText;
@@ -40,7 +38,6 @@ public class DonationsFragment extends Fragment implements View.OnClickListener 
     public DonationsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,14 +59,13 @@ public class DonationsFragment extends Fragment implements View.OnClickListener 
         donateButton = view.findViewById(R.id.donate_button);
         donateButton.setOnClickListener(this);
 
-        viewModel = ViewModelProviders.of(requireActivity()).get(CharityViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(CustomViewModel.class);
         selectedCharity = viewModel.getSelectedCharity();
 
         // Observe for changes in Loader state(Show/Hide)
         viewModel.getLoaderState().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                Log.i("TEST_LOGG", "Donations->LoaderStateChanged: " + aBoolean);
                 if(aBoolean){
                     // Show loader
                     if(!progressDialog.isShowing())
@@ -77,7 +73,7 @@ public class DonationsFragment extends Fragment implements View.OnClickListener 
                 }else{
                     // Hide loader
                     if(progressDialog.isShowing())
-                        progressDialog.hide();
+                        progressDialog.dismiss();
                 }
             }
         });
@@ -85,10 +81,8 @@ public class DonationsFragment extends Fragment implements View.OnClickListener 
 
     // Initializes Progress Dialog
     private void initLoader(){
-        Log.i("TEST_LOGG", "Donations->initLoader");
         progressDialog = new ProgressDialog(requireActivity());
-        // TODO Move title text to strings
-        progressDialog.setTitle("Loading ...");
+        progressDialog.setTitle(getString(R.string.loading_text));
         progressDialog.setCancelable(false);
     }
 

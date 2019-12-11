@@ -7,9 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.bojanpavlovic.omiseandroid.interfaces.ICharityResponse;
 import com.bojanpavlovic.omiseandroid.interfaces.IDonationResponse;
 import com.bojanpavlovic.omiseandroid.interfaces.IRepository;
-import com.bojanpavlovic.omiseandroid.model.CharityResponseModel;
 import com.bojanpavlovic.omiseandroid.model.DonationModel;
-import com.bojanpavlovic.omiseandroid.model.DonationResponseModel;
 
 public class Repository implements IRepository {
     private static Repository INSTANCE = null;
@@ -27,7 +25,9 @@ public class Repository implements IRepository {
     }
 
     // For the sake of simplicity, we will not check if internet connection is available
-    // Assume we are connected to internet !!!
+    // If network unavailable, network timeout will be triggered
+    // after some time and error toast will be shown
+
     @Override
     public MutableLiveData<ICharityResponse> getCharities() {
         return retrofitAPI.getCharities();

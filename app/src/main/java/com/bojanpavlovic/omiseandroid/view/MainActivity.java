@@ -1,21 +1,20 @@
 package com.bojanpavlovic.omiseandroid.view;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.os.Bundle;
-import android.util.Log;
-
 import com.bojanpavlovic.omiseandroid.FragmentState;
 import com.bojanpavlovic.omiseandroid.R;
 import com.bojanpavlovic.omiseandroid.model.AttachStateContainer;
-import com.bojanpavlovic.omiseandroid.viewmodel.CharityViewModel;
+import com.bojanpavlovic.omiseandroid.viewmodel.CustomViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CharityViewModel viewModel;
+    private CustomViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         // Attach starting fragment
         attachInitialFragment();
 
-        viewModel = ViewModelProviders.of(this).get(CharityViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(CustomViewModel.class);
 
         viewModel.getFragmentState().observe(this, new Observer<AttachStateContainer>() {
             @Override

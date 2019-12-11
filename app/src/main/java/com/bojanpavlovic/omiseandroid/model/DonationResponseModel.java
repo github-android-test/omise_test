@@ -4,17 +4,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class DonationResponseModel {
     @SerializedName("success")
-    private String success;
+    private boolean success;
     @SerializedName("error_code")
     private String errorCode;
     @SerializedName("error_message")
     private String errorMsg;
 
-    public String getSuccess() {
+    public boolean getSuccess() {
         return success;
     }
 
-    public void setSuccess(String success) {
+    public void setSuccess(boolean success) {
         this.success = success;
     }
 

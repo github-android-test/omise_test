@@ -60,9 +60,13 @@ public class MainActivity extends AppCompatActivity {
             // Attach charity list fragment
             transaction.replace(R.id.main_layout, new CharityListFragment());
             transaction.commit();
-        }else{
+        }else if(stateContainer.getNewState() == FragmentState.ATTACHED_DONATIONS){
             // Attach Donations fragment
             transaction.replace(R.id.main_layout, new DonationsFragment());
+            transaction.commit();
+        }else{
+            // Attach Success fragment
+            transaction.replace(R.id.main_layout, new SuccessFragment());
             transaction.commit();
         }
     }

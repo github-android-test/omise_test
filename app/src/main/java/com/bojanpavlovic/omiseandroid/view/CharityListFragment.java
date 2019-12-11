@@ -3,6 +3,7 @@ package com.bojanpavlovic.omiseandroid.view;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,9 +53,9 @@ public class CharityListFragment extends Fragment implements CharityAdapter.ICha
         initLoader();
 
         // Get proper ViewModel
-        viewModel = ViewModelProviders.of(requireActivity()).get(CharityViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity() /*requireActivity() */).get(CharityViewModel.class);
         // Initialize adapter
-//        CharityResponseModel responseModel = viewModel.getCharityViewModel().getValue();
+//        CharityResponseModel responseModel = viewModel.getCharityLiveData().getValue();
         CharityResponseModel responseModel = viewModel.getCharities().getValue();
         List<CharityItem> list = responseModel != null ? responseModel.getCharityItemList() : null;
         adapter = new CharityAdapter(requireContext(), R.layout.charity_item, list, this);
@@ -74,7 +75,7 @@ public class CharityListFragment extends Fragment implements CharityAdapter.ICha
 
     private void startObserving(){
         // Observe for data changes and update UI if needed
-        viewModel.getCharityViewModel().observe(this, new Observer<CharityResponseModel>() {
+        viewModel.getCharityLiveData().observe(this, new Observer<CharityResponseModel>() {
             @Override
             public void onChanged(CharityResponseModel charityResponseModel) {
                 // Update adapter with new charity list data
@@ -88,6 +89,7 @@ public class CharityListFragment extends Fragment implements CharityAdapter.ICha
             @Override
             public void onChanged(Boolean aBoolean) {
                 if(aBoolean){
+                    Log.i("TEST_LOGG", "Charity->LoaderStateChanged: " + aBoolean);
                     // Show loader
                     if(!progressDialog.isShowing())
                         progressDialog.show();

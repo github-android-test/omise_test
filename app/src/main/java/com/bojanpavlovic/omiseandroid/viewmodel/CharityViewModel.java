@@ -20,15 +20,19 @@ public class CharityViewModel extends AndroidViewModel {
     private MutableLiveData<CharityResponseModel> charityLiveData;
     private MutableLiveData<Boolean> isLoadingLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> exitStateLiveData = new MutableLiveData<>();
-    private MutableLiveData<DonationResponseModel> donationLiveData = new MutableLiveData<>();
+    private MutableLiveData<DonationResponseModel> donationLiveData;
     private Repository repository;
     private Charity selectedCharity;
+    // Holds response from server after donation call.
+    // Used in Success screen
+    private DonationResponseModel donationResponsedata;
 
     public CharityViewModel(@NonNull Application application) {
         super(application);
         // Initialize repository
         repository = Repository.getINSTANCE(application);
         charityLiveData = new MutableLiveData<>();
+        donationLiveData = new MutableLiveData<>();
         /**
          * Initialize charity object. It holds chosen charity info when we make transition
          * from charity screen to donation screen
@@ -39,7 +43,7 @@ public class CharityViewModel extends AndroidViewModel {
     /**
      * Api that exposes ViewModel to View
      */
-    public LiveData<CharityResponseModel> getCharityViewModel(){
+    public LiveData<CharityResponseModel> getCharityLiveData(){
         return charityLiveData;
     }
 
@@ -53,8 +57,11 @@ public class CharityViewModel extends AndroidViewModel {
         return charityLiveData;
     }
 
-    public void makeDonation(DonationModel donation){
-        repository.setDonation(donation);
+    public LiveData<DonationResponseModel> makeDonation(DonationModel donation){
+        donationLiveData = repository.setDonation(donation);
+        // TODO Test loader - delete later
+        isLoadingLiveData.postValue(true);
+        return donationLiveData;
     }
 
     public LiveData<Boolean> getLoaderState(){
@@ -85,11 +92,30 @@ public class CharityViewModel extends AndroidViewModel {
         fragmentStateLiveData.postValue(new AttachStateContainer(FragmentState.ATTACHED_DONATIONS, true));
     }
 
+//    public void changeScreen(int charityId, String charityName){
+//
+//    }
+
+    /**
+     * Used for app navigation
+     * Changes attached fragment with desired one
+     * @param nextState desired screen
+     */
+    public void changeScreen(FragmentState nextState){
+        fragmentStateLiveData.postValue(new AttachStateContainer(nextState, true));
+    }
+
     public LiveData<DonationResponseModel> getDonationLiveData(){
         return donationLiveData;
     }
 
+    public void setDonationResponseData(DonationResponseModel data){
+        donationResponsedata = data;
+    }
 
+    public DonationResponseModel getDonationResponseData(){
+        return donationResponsedata;
+    }
 
     public void onBackPressed(){
        FragmentState lastState = fragmentStateLiveData.getValue().getNewState();
@@ -99,6 +125,9 @@ public class CharityViewModel extends AndroidViewModel {
        }else if(lastState == FragmentState.ATTACHED_CHARITY){
            // We are already at the beginning screen. Exit app
            exitStateLiveData.postValue(true);
+       }else if(lastState == FragmentState.ATTACHED_SUCCESS){
+           // Also go back to Home screen
+           fragmentStateLiveData.postValue(new AttachStateContainer(FragmentState.ATTACHED_CHARITY, true));
        }
     }
 
